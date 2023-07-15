@@ -1,0 +1,21 @@
+import sqlite3
+
+dbname = 'anonym_discord_log.db'
+conn = sqlite3.connect(dbname)
+cur = conn.cursor()
+
+cur.execute("""
+
+    CREATE TABLE logs(
+        message_id INTEGER PRIMARY KEY,
+        author STRING,
+        content STRING,
+        time TIMESTAMP,
+        moderator STRING
+    )
+
+""")
+
+
+conn.commit()
+conn.close()
