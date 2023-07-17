@@ -29,14 +29,12 @@ def insert_db(message_id:int, author:str, content:str, created_at:datetime, mode
     cur = conn.cursor()
 
     if moderator:
-        sql_query = f"UPDATE logs SET moderator = '{moderator}' WHERE message_id = {message_id};"
-        cur.execute(sql_query)
+        sql_query = "UPDATE logs SET moderator = ? WHERE message_id = ?;"
+        cur.execute(sql_query, (moderator, message_id));
     else:
         created_at_JST = (created_at + datetime.timedelta(hours=9)).strftime('%Y/%m/%d %H:%M:%S') #もっと書き方あるはず
-        content_rm_col = content.replace('"','').replace("'",'').replace("`",'') #もっと書き方あるはず2
-
-        sql_query = f"INSERT INTO logs values({message_id}, '{author}', '{content_rm_col}', '{created_at_JST}', NULL)"
-        cur.execute(sql_query)
+        sql_query = "INSERT INTO logs values(?, ?, ?, ?, NULL)"
+        cur.execute(sql_query, (message_id, str(author), content, created_at_JST))
 
     conn.commit()
     cur.close()
@@ -49,8 +47,8 @@ def extract_db(created_at): #return: レコードのtuple
 
     created_at_JST = (created_at + datetime.timedelta(hours=9)).strftime('%Y/%m/%d %H:%M:%S')
 
-    sql_query = f"SELECT * FROM logs WHERE time <= '{created_at_JST}' ORDER BY time DESC LIMIT 1;"
-    cur.execute(sql_query)
+    sql_query = f"SELECT * FROM logs WHERE time <= '?' ORDER BY time DESC LIMIT 1;"
+    cur.execute(sql_query, (created_at_JST))
     extract = cur.fetchone()
     cur.close()
     conn.close()
