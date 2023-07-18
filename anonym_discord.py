@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 import datetime, sqlite3
 import discord, discord.app_commands
+from dotenv import load_dotenv
 
-
-
-
-TOKEN = ""                              #################### 別送 ####################
-SERVERID = 0
-CHANNELID = 0
-
-
+###
+###環境変数の取得
+###
+load_dotenv()
+import os
+TOKEN = os.getenv("TOKEN")
+SERVERID = int(os.getenv("SERVERID"))
+CHANNELID = int(os.getenv("CHANNELID"))
 
 
 client = discord.Client(intents=discord.Intents.all(),
