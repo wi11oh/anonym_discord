@@ -85,7 +85,7 @@ def create_Embed(title:str, frame_color:int, description:str, **kwargs):
                         inline = False)
 
     embed.set_footer(text = "made by willoh",
-                     icon_url = "https://pbs.twimg.com/profile_images/1665235452755050496/FUkvyf1-_400x400.jpg")
+                     icon_url = "https://pbs.twimg.com/profile_images/1683683033948499971/tJUvh6Qw_400x400.jpg")
 
     return embed
 
