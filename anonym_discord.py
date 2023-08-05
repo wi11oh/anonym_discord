@@ -71,7 +71,7 @@ def moderator_list(created_at):
     return moderator_list_
 
 
-def create_Embed(title:str, frame_color:int, description:str, f1:str, v1:str, f2:str, v2:str, f3:str, v3:str): #(*args, **kwargs)めんどくさくて…
+def create_Embed(title:str, frame_color:int, description:str, **kwargs):
     embed = discord.Embed(title = title,
                           color = frame_color,
                           description = description)
@@ -79,15 +79,10 @@ def create_Embed(title:str, frame_color:int, description:str, f1:str, v1:str, f2
                      url = "https://twitter.com/UirouMachineVRC",
                      icon_url = client.user.display_avatar)
 
-    embed.add_field(name = f1,
-                    value = v1,
-                    inline = False)
-    embed.add_field(name = f2,
-                    value = v2,
-                    inline = False)
-    embed.add_field(name = f3,
-                    value = v3,
-                    inline = False)
+    for fn, fv in kwargs.items():
+        embed.add_field(name = fn,
+                        value = fv,
+                        inline = False)
 
     embed.set_footer(text = "made by willoh",
                      icon_url = "https://pbs.twimg.com/profile_images/1665235452755050496/FUkvyf1-_400x400.jpg")
@@ -166,14 +161,14 @@ async def tokutei(ctx: discord.Interaction, message_id: str):
         moderator_list_.append(now_moderator)
         insert_db(db_return[0], None, None, None, ",".join(moderator_list_))
         await ctx.response.send_message(embed=create_Embed("/特定しますた　⬆追加", 0x00bfff, "__特定ポイントを追加しました__",
-                                                           "送信日時", db_return[3], "内容", db_return[2], "累計特定Pt", modr_len+1), ephemeral=True)
+                                                           送信日時=db_return[3], 内容=db_return[2], 累計特定Pt=modr_len+1),ephemeral=True)
 
         if flag:
             await channel.send(embed=create_Embed("/特定しますた　🧨発動", 0x00bfff, "__特定ポイントがたまりました！🎉__",
-                                                  "送信日時", db_return[3], "内容", db_return[2], "送信者", f"||{db_return[1]}||"))
+                                                  送信日時=db_return[3], 内容=db_return[2], 送信者=f"||{db_return[1]}||"))
     else:
         await ctx.response.send_message(embed=create_Embed("/特定しますた　⚠️警告", 0x00bfff, "__あなたはすでに特定ポイントを追加しています__",
-                                                           "送信日時", db_return[3], "内容", db_return[2], "累計特定Pt", modr_len), ephemeral=True)
+                                                           送信日時=db_return[3], 内容=db_return[2], 累計特定Pt=modr_len), ephemeral=True)
 
 
 @tree.command(name="silent", description="@silentしなくてもいいし入力中も出ないしどのチャンネルからでも🥷匿名🥷に書き込めるかわりにファイル添付はできないコマンド")
