@@ -103,7 +103,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if not message.author.bot and message.channel.id == CHANNELID:
+    if not message.author.bot and message.channel.id == CHANNELID and message.type != discord.MessageType.pins_add:
         channel = client.get_channel(CHANNELID)
         message_content = message.content
         attach_file = []
